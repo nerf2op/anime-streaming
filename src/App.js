@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Navbar from './components/Navbar';
+import Main from './components/Main';
+import Info from './components/Info';
+import Genres from './components/Genres';
+import {BrowserRouter as Router,Route,useParams} from 'react-router-dom';
 function App() {
+const [data,setData] = useState([]);
+
+useEffect(()=>{
+  for(let i=0;i<5;i++){
+    axios('https://anime5311.herokuapp.com/api/popular/'+i)
+    .then((res)=>{
+      // console.log(res.data);
+      res.data.results.forEach((item)=>{
+        setData(prev=>[...prev,item]);
+      })
+      
+      // console.log(data)
+    })
+  }
+},[])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Router>
+        <Navbar
+        data={data}
+        setData={setData}/>
+      <Genres 
+        setData={setData}/>
+     <Route path='/' exact >
+     <Main 
+        data={data}/>
+     </Route>
+     <Route path='/info/:id' exact>
+        <Info/>
+     </Route>
+      </Router>
+    </div>  
+
   );
 }
 
