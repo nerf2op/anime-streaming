@@ -55,7 +55,7 @@ function Navbar({data,setData}) {
                 searchAnime(ref.current.value);
             }}>
            
-                <SearchIcon  id='icon'/>
+                <SearchIcon id='icon'/>
             </button>
             </span>
         </div>
